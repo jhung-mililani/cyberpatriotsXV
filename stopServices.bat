@@ -9,7 +9,9 @@
 ::======================================================================== 
 
 @echo off
-set servicesList=PlugPlay Spooler
+set servicesStopList=PlugPlay Spooler
+set servicesStartList=
+set windowsUpdateServices=wuauserv
 
 :stopService 
 
