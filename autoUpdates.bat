@@ -1,3 +1,4 @@
+@echo off
 echo Updating automatic update policies...
 ::Windows automatic updates
 reg add HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU /v AutoInstallMinorUpdates /t REG_DWORD /d 1 /f
