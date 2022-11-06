@@ -8,21 +8,39 @@
 :: /___/                  /____/                                          
 ::======================================================================== 
 
-@echo off
-set servicesStopList=PlugPlay Spooler
+@echo off 
+
+:: The delimiter used here is a comma, but you can use space as a delimiter as well. 
+set servicesStopList=PlugPlay, Spooler
 set servicesStartList=
 set windowsUpdateServices=wuauserv
 
-:stopService 
-
-
-for %%i in (%servicesList%) do (
-   sc stop %%i 
-   if ERRORLEVEL 1 echo Unable to stop %%i. Check to see if it is already stopped. 
-   pause 
-   sc config %%i start=disabled 
-   if ERRORLEVEL 1 echo Unable to disable %%i. Check to see if it is already disabled. 
-   pause 
+:: This loop iterates over the given array and stops and disables those services. TODO: make array mutable by prompting user. 
+for %%i in (%servicesStopList%) do (
+   call :stopService %%i 
+   call :disableService %%i 
 ) 
+exit /b 0
+
+:: This function uses the Service Control Manager to stop the service that is passed through it as a parameter. 
+:stopService 
+sc stop %~1
+if ERRORLEVEL 1 echo Unable to stop %~1. Check to see if it is already stopped. 
+   pause 
+exit /b 0 
+
+:: This function uses the Service Control Manager to disable the service that is passed through it as a parameter. 
+:disableService 
+sc config %~1 start=disabled
+if ERRORLEVEL 1 echo Unable to disable %~1. Check to see if it is already disabled. 
+   pause 
+exit /b 0 
+
+:: This function uses the Service Control Manager to start the service that is passed through it as a parameter. 
+:startService 
+sc start %~1 
+if ERRORLEVEL 1 echo Unable to start %~1. Check to see if it is already started. 
+   pause 
+exit /b 0 
 
 cmd /k 
