@@ -12,7 +12,7 @@ exit
 echo Choose An option:
 echo 1. Automation
 echo 2. List Processes
-echo 3. Password Policies
+echo 3. Update Password Policies
 echo 4. Find Files
 echo 5. Disable Remote Desktop
 echo 6. Enable Auto-Update
@@ -39,7 +39,7 @@ reg add "HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-T
 
 :: Failsafe
 if %errorlevel%==1 netsh advfirewall firewall set service type = remotedesktop mode = disable
-:: Windows auomatic updates
+:: Windows automatic updates
 reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /v AUOptions /t REG_DWORD /d 3 /f
 
 
@@ -148,9 +148,9 @@ reg ADD "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v Allocate
 :: Automatic Admin logon
 reg ADD "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v AutoAdminLogon /t REG_DWORD /d 0 /f
 :: Logo message text
-reg ADD "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v LegalNoticeText /t REG_SZ /d "Lol noobz pl0x don't hax, thx bae"
+reg ADD "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v LegalNoticeText /t REG_SZ /d "Unauthorized access is prohibited. Violators will be prosecuted to the fullest extent of the law."
 :: Logon message title bar
-reg ADD "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v LegalNoticeCaption /t REG_SZ /d "Dnt hax me"
+reg ADD "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v LegalNoticeCaption /t REG_SZ /d "Unauthorized access is prohibited."
 :: Wipe page file from shutdown
 reg ADD "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" /v ClearPageFileAtShutdown /t REG_DWORD /d 1 /f
 :: LOL this is a key? Disallow remote access to floppie disks
