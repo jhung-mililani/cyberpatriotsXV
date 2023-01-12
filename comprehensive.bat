@@ -1,15 +1,15 @@
 @echo off
-echo Checking if script contains Administrative rights...
+echo Checking if script contains administrative rights...
 net sessions
 if %errorlevel%==0 (
 echo Success!
 ) else (
-echo No admin, please run with Administrative rights...
+echo No admin, please run with administrative rights...
 pause
 exit
 )
 :MENU
-echo Choose An option:
+echo Choose an option:
 echo 1. Automation
 echo 2. List Processes
 echo 3. Update Password Policies
