@@ -1,7 +1,7 @@
 # this script secures the Administrators local group
 $allowedAdminsPath = "$($env:USERPROFILE)\Desktop\allowedAdmins.txt"
 $unauthAdminsPath = "$($env:USERPROFILE)\Desktop\unauthAdmins.txt"
-$allowedAdminsTempPath = "$($env:USERPROFILE)\Desktop\allowedAdminsTemp.txt"
+$allowedAdminsTempPath = "$($env:LOCALAPPDATA)\Temp\allowedAdminsTemp.txt"
 $unauthAdmins = Get-LocalGroupMember -Group Administrators | Where-Object { (Get-Content $allowedAdminsTempPath) -notcontains $_.Name }
 
 Write-Output "Warning: Ensure that the list of administrators is correct at [$allowedAdminsPath] before running this script."
