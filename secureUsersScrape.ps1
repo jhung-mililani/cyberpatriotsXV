@@ -12,3 +12,16 @@ $newArr = $temp | Where-Object { $_ -notmatch "password" } | Where-Object { $_ -
 $newArr | Out-File -FilePath "$($env:USERPROFILE)\Desktop\results.txt"
 
 Remove-Item -Path "$($env:TEMP)\$name.tmp"
+
+foreach ($entry in $newArr) {
+
+    if ($entry -match " (you)$") {
+
+        $entry -replace " (you)$", ""
+
+    }
+
+}
+
+#newArr could be get-content file.txt as well
+$newArr | ? {$_ -ne "" | Set-Content file.txt
