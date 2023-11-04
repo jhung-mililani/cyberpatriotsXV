@@ -24,4 +24,4 @@ foreach ($entry in $newArr) {
 }
 
 #newArr could be get-content file.txt as well
-$newArr | ? {$_ -ne "" | Set-Content file.txt
+$newArr | ? {$_ -ne ""} | Set-Content file.txt
