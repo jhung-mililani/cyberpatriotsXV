@@ -18,4 +18,4 @@ try
 }
 catch {
     Write-Output "An error occurred: $($_.Exception.Message)"
-}r
+}
