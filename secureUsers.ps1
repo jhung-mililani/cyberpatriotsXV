@@ -1,12 +1,32 @@
-Write-Output "This script takes the lists of users and administrators on the README page as input, removes unauthorized users on this system, and logs them at [$unauthUserPath]"
-Read-Host -Prompt "Press any key to continue"
+# this script accesses the README file for a list of authorized users and administrators, checks it against the current list of users on the machine, removes unauthorized users upon user confirmation, and records the results in a log file.
+# check if running with administrative privileges 
+if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+    Write-Output "Please run this script as an administrator."
+    Read-Host -Prompt "Press enter to exit"
+    exit
+} else {
+    Write-Output "This script takes the lists of users and administrators on the README page as input, removes unauthorized users on this system, and logs them at [$unauthUserPath]"
+    Read-Host -Prompt "Press enter to continue"
+}
 
 # Generate a unique name for a temporary file
 $tempName = New-Guid
+# set the path for the logfile
+$unauthUserPath = "$($env:USERPROFILE)\Desktop\unauthUsers.txt"
 # Initialize an empty array to store the inner text of <pre> elements
 $rawInnerText = @()
-$defaultAccounts = @("Administrator", "DefaultAccount", "Guest", "WDAGUtilityAccount")
-$unauthUserPath = "$($env:USERPROFILE)\Desktop\unauthUsers.txt"
+# initialize array with the default local user accounts (https://learn.microsoft.com/en-us/windows/security/identity-protection/access-control/local-accounts)
+$defaultAccounts = @(
+    "Administrator",
+    "DefaultAccount",
+    "Guest",
+    "HelpAssistant",
+    "KRBTGT",
+    "LOCAL SERVICE",
+    "NETWORK SERVICE",
+    "SYSTEM",
+    "WDAGUtilityAccount"
+)
 
 # Get the URL from a .url file on the Desktop
 $url = Get-Content -Path "$($env:USERPROFILE)\Desktop\README.url" | Where-Object { $_ -match "url=(.*)" }
@@ -34,14 +54,17 @@ $allowedUsers = $allowedUsers -replace ' \(you\)', '' | Where-Object { $_ -ne ""
 # Delete the temporary file
 Remove-Item -Path "$($env:TEMP)\$tempName.tmp"
 
+# compare the list of local accounts to the default list and the list accessed from the README
 $unauthUsers = Get-LocalUser | Where-Object { $allowedUsers -notcontains $_.Name } | Where-Object { $defaultAccounts -notcontains $_.Name}
 
 try
 {
+    # for every user account in the array, record its name in the logfile
     $unauthUsers | Select-Object -ExpandProperty Name | Out-File -FilePath $unauthUserPath
+    # attempt to remove the account with user confirmation
     $unauthUsers | Remove-LocalUser -Confirm -ErrorAction Inquire
     Write-Output "Done removing unauthorized users, log can be found at [$unauthUserPath]"
-    Read-Host -Prompt "Press any key to exit"
+    Read-Host -Prompt "Press enter to exit"
 }
 catch {
     Write-Output "An error occurred: $($_.Exception.Message)"
