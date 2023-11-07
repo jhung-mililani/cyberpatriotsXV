@@ -7,8 +7,9 @@
 ## Supported OSes:
 
 - Windows 10
-- Windows Server 2019
+- Windows Server 2022
 - Ubuntu
+- Debian
 
 ---
 
