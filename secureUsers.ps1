@@ -42,7 +42,7 @@ foreach ($element in $preElements) {
  $rawInnerText += $element.InnerText
 }
 # Write the array to a temporary file
-$rawInnerText | out-file -filePath “$($env:TEMP)\$tempName.tmp”
+$rawInnerText | out-file -filePath "$($env:TEMP)\$tempName.tmp"
 
 # Read the temporary file
 $temp = Get-Content -Path "$($env:TEMP)\$tempName.tmp"
