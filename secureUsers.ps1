@@ -1,13 +1,13 @@
 # this script accesses the README file for a list of authorized users and administrators, checks it against the current list of users on the machine, removes unauthorized users upon user confirmation, and records the results in a log file.
 # check if running with administrative privileges 
-if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-    Write-Output "Please run this script as an administrator."
-    Read-Host -Prompt "Press enter to exit"
-    exit
-} else {
-    Write-Output "This script takes the lists of users and administrators on the README page as input, removes unauthorized users on this system, and logs them at [$unauthUserPath]"
-    Read-Host -Prompt "Press enter to continue"
-}
+# if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+#     Write-Output "Please run this script as an administrator."
+#     Read-Host -Prompt "Press enter to exit"
+#     exit
+# } else {
+#     Write-Output "This script takes the lists of users and administrators on the README page as input, removes unauthorized users on this system, and logs them at [$unauthUserPath]"
+#     Read-Host -Prompt "Press enter to continue"
+# }
 
 # Generate a unique name for a temporary file
 $tempName = New-Guid
@@ -29,7 +29,7 @@ $defaultAccounts = @(
 )
 
 # Get the URL from a .url file on the Desktop
-$url = Get-Content -Path "$($env:USERPROFILE)\Desktop\README.url" | Where-Object { $_ -match "url=(.*)" }
+$url = Get-Content -Path "C:\CyberPatriot\README.url" | Where-Object { $_ -match "url=(.*)" }
 # Extract the URL from the match
 $url = $matches[1]
 # Send a web request to the URL
